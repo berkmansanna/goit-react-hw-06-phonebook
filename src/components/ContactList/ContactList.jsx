@@ -1,4 +1,3 @@
-
 import { useSelector } from 'react-redux';
 
 import { filtredContacts } from 'redux/contact-selector';
