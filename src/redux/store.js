@@ -12,12 +12,29 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+const alertMw = store => next => action => {
+  if (action.type === 'contact/save') {
+    const contact = action.payload;
+    const items = store.getState().contacts.items;
+
+    const onList = items.find(({ name }) => name === contact.name);
+
+    if (onList) {
+      alert('You saved this contact');
+      return;
+    }
+  }
+
+  next(action);
+};
+
 const middleware = [
   ...getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  alertMw,
 ];
 
 const persistConfig = {
